@@ -1,7 +1,6 @@
 name: Github-Actions-ubuntu
 
 on:
-  repository_dispatch:
   workflow_dispatch:
     inputs:
       ssh:
@@ -27,7 +26,8 @@ jobs:
       
     - name: Use tmate connect ssh
       uses: mxschmitt/action-tmate@v3.17
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      #if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.ssh }}
             
 
     - name: Upload File
