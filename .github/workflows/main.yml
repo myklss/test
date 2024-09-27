@@ -20,17 +20,22 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo -E apt-get -qq update
+        #sudo -E apt-get -qq update
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
-
+        
+    - name: Mount /dev/sdb1 to build
+      run: |
+        chmod +x Expansion.sh
+        ./Expansion.sh
+      
     - name: Create up directory
       run: mkdir up
       
     - name: Use tmate connect ssh
       uses: mxschmitt/action-tmate@v3.17
       with:
-        limit-access-to-actor: false
+        limit-access-to-actor: false  #如果github设置了SSH keys则这里可以输入true使用密钥登录
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
             
 
